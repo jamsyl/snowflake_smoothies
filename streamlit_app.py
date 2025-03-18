@@ -1,6 +1,6 @@
 # Import python packages
 import streamlit as st
-from snowflake.snowpark.context import get_active_session
+#from snowflake.snowpark.context import get_active_session # remove in stand alone Streamlit
 from snowflake.snowpark.functions import col
 
 helpful_links = [
@@ -17,7 +17,12 @@ st.write("Choose the fruit you want in your custome Smoothie!")
 name_on_order = st.text_input("Name on Smoothie")
 st.write("The name on your Smoothie will be:", name_on_order)
 
-session = get_active_session()
+#session = get_active_session() #working in streamlit in Snowflake
+
+#stand alone Streamlit
+cnx = st.connection('snowflake')
+session = cnx.session()
+
 my_dataframe = session.table("smoothies.public.fruit_options").select(col('FRUIT_NAME'))
 st.dataframe(data=my_dataframe, use_container_width=True)
 
