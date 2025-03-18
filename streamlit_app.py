@@ -1,5 +1,6 @@
 # Import python packages
 import streamlit as st
+import pandas as pd
 import requests
 #from snowflake.snowpark.context import get_active_session # remove in stand alone Streamlit
 from snowflake.snowpark.functions import col
@@ -24,8 +25,9 @@ st.write("The name on your Smoothie will be:", name_on_order)
 cnx = st.connection('snowflake')
 session = cnx.session()
 
-my_dataframe = session.table("smoothies.public.fruit_options").select(col('FRUIT_NAME'))
-#st.dataframe(data=my_dataframe, use_container_width=True) #afficher data frame
+my_dataframe = session.table("smoothies.public.fruit_options").select(col('FRUIT_NAME'),col('SEARCH_ON'))
+st.dataframe(data=my_dataframe, use_container_width=True) #afficher data frame
+st.stop()
 
 ingredients_list = st.multiselect("Choose up to 5 ingridients:",my_dataframe,max_selections=5)
 
